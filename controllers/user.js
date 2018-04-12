@@ -2,25 +2,32 @@ const encryption = require("../utilities/encryption");
 const User = require('../models').User;
 
 module.exports = {
-    registerGet: (req, res) => {
+    registerGet: (req, res) =>
+    {
         res.render('user/register');
     },
 
-    registerPost: (req, res) => {
+    registerPost: (req, res) =>
+    {
         let registerArgs = req.body;
 
-        User.findOne({where: {email: registerArgs.email}}).then(user => {
+        User.findOne({where: {email: registerArgs.email}}).then(user =>
+        {
             let errorMsg = '';
-            if (user) {
+            if (user)
+            {
                 errorMsg = 'User with the same username exists!';
-            } else if (registerArgs.password !== registerArgs.repeatedPassword) {
+            } else if (registerArgs.password !== registerArgs.repeatedPassword)
+            {
                 errorMsg = 'Passwords do not match!'
             }
 
-            if (errorMsg) {
+            if (errorMsg)
+            {
                 registerArgs.error = errorMsg;
                 res.render('user/register', registerArgs)
-            } else {
+            } else
+            {
 
                 let salt = encryption.generateSalt();
                 let passwordHash = encryption.hashPassword(registerArgs.password, salt);
@@ -32,9 +39,12 @@ module.exports = {
                     salt: salt
                 };
 
-                User.create(userObject).then(user => {
-                    req.logIn(user, (err) => {
-                        if (err) {
+                User.create(userObject).then(user =>
+                {
+                    req.logIn(user, (err) =>
+                    {
+                        if (err)
+                        {
                             registerArgs.error = err.message;
                             res.render('user/register', registerArgs.dataValues);
                             return;
@@ -46,21 +56,27 @@ module.exports = {
         })
     },
 
-    loginGet: (req, res) => {
+    loginGet: (req, res) =>
+    {
         res.render('user/login');
     },
 
-    loginPost: (req, res) => {
+    loginPost: (req, res) =>
+    {
         let loginArgs = req.body;
-        User.findOne({where: {email: loginArgs.email}}).then(user => {
-            if (!user || !user.authenticate(loginArgs.password)) {
+        User.findOne({where: {email: loginArgs.email}}).then(user =>
+        {
+            if (!user || !user.authenticate(loginArgs.password))
+            {
                 loginArgs.error = 'Either username or password is invalid!';
                 res.render('user/login', loginArgs);
                 return;
             }
 
-            req.logIn(user, (err) => {
-                if (err) {
+            req.logIn(user, (err) =>
+            {
+                if (err)
+                {
                     res.redirect('/user/login', {error: err.message});
                     return;
                 }
@@ -70,7 +86,8 @@ module.exports = {
         })
     },
 
-    logout: (req, res) => {
+    logout: (req, res) =>
+    {
         req.logOut();
         res.redirect('/');
     }

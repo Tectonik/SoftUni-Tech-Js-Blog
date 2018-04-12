@@ -5,7 +5,8 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 
-module.exports = (app, config) => {
+module.exports = (app, config) =>
+{
     // View engine setup.
     app.set('views', (path.join(config.rootFolder, '/views')));
     app.set('view engine', 'hbs');
@@ -27,8 +28,10 @@ module.exports = (app, config) => {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    app.use((req, res, next) => {
-        if (req.user) {
+    app.use((req, res, next) =>
+    {
+        if (req.user)
+        {
             res.locals.user = req.user;
         }
         next();
