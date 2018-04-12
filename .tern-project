@@ -1,9 +1,17 @@
 {
   "ecmaVersion": 6,
-  "libs": [],
+  "libs": [
+    "express",
+    "passport",
+    "passport-local",
+    "sequelize"
+  ],
   "loadEagerly": [],
   "dontLoad": [],
   "plugins": {
-    "doc_comment": true
+    "doc_comment": true,
+    "node": {},
+    "express":{},
+    "tern-node-express":{}
   }
 }
