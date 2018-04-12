@@ -11,13 +11,14 @@ module.exports = {
     {
         let registerArgs = req.body;
 
-        User.findOne({where: {email: registerArgs.email}}).then(user =>
+        User.findOne({ where: { email: registerArgs.email } }).then(user =>
         {
             let errorMsg = '';
             if (user)
             {
                 errorMsg = 'User with the same username exists!';
-            } else if (registerArgs.password !== registerArgs.repeatedPassword)
+            }
+            else if (registerArgs.password !== registerArgs.repeatedPassword)
             {
                 errorMsg = 'Passwords do not match!'
             }
@@ -26,7 +27,8 @@ module.exports = {
             {
                 registerArgs.error = errorMsg;
                 res.render('user/register', registerArgs)
-            } else
+            }
+            else
             {
 
                 let salt = encryption.generateSalt();
@@ -49,6 +51,7 @@ module.exports = {
                             res.render('user/register', registerArgs.dataValues);
                             return;
                         }
+
                         res.redirect('/')
                     })
                 })
@@ -64,7 +67,7 @@ module.exports = {
     loginPost: (req, res) =>
     {
         let loginArgs = req.body;
-        User.findOne({where: {email: loginArgs.email}}).then(user =>
+        User.findOne({ where: { email: loginArgs.email } }).then(user =>
         {
             if (!user || !user.authenticate(loginArgs.password))
             {
@@ -77,7 +80,7 @@ module.exports = {
             {
                 if (err)
                 {
-                    res.redirect('/user/login', {error: err.message});
+                    res.redirect('/user/login', { error: err.message });
                     return;
                 }
 

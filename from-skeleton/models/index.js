@@ -47,11 +47,11 @@ async function create(models)
     console.log('Initializing...');
     await sequelize
         .authenticate()
-        .then(function (err)
+        .then(function(err)
         {
             console.log('\x1b[32m%s\x1b[0m', 'Connection has been established successfully.');
         })
-        .catch(function (err)
+        .catch(function(err)
         {
             console.error('Unable to connect to the database!');
             process.exit(1);
@@ -65,7 +65,8 @@ async function create(models)
             models.splice(i, 1);
             i--;
             //console.log('success for '+ modelName);
-        } catch (err)
+        }
+        catch (err)
         {
             //console.log('failed to initialize '+ modelName);
         }
