@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const encryption = require('../utilities/encryption');
 
-module.exports = (sequelize, DataTypes) =>
+module.exports = (sequelize) =>
 {
     const User = sequelize.define('User',
     {
@@ -29,10 +29,20 @@ module.exports = (sequelize, DataTypes) =>
         }
     });
 
-    User.prototype.authenticate = (password) =>
+    // FIXME: This fails with fat arrow syntax
+    User.prototype.authenticate = function(password)
     {
-        const inputPasswordHash = encryption.hashPassword(password, this.salt);
+        let inputPasswordHash = encryption.hashPassword(password, this.salt);
         return inputPasswordHash === this.passwordHash;
+    };
+
+    User.associate = (models) =>
+    {
+        User.hasMany(models.Article,
+        {
+            foreignKey: 'authorId',
+            sourceKey: 'id'
+        });
     };
 
     return User;

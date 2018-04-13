@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const encryption = require("../utilities/encryption");
+const encryption = require('../utilities/encryption');
 
 module.exports = function(sequelize)
 {

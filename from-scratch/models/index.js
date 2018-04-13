@@ -1,7 +1,7 @@
 const fileSystem = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
-const basename = path.basename(__filename);
+const basename = path.basename(module.filename);
 const environment = process.env.NODE_ENV || 'development';
 const config = require(`${__dirname}/../config/config.js`).database[environment];
 const database = {};
@@ -25,7 +25,7 @@ fileSystem
     )
     .forEach(file =>
     {
-        const model = sequelize['import'](path.join(__dirname, file));
+        const model = sequelize.import(path.join(__dirname, file));
         database[model.name] = model;
     });
 
@@ -50,23 +50,24 @@ async function create(models)
         })
         .catch((error) =>
         {
-            console.log('Database connection unsuccessful!');
+            console.log('Database connection unsuccessful! Error:');
+            // console.log(error);
             process.exit(1);
         });
 
     for (let i = 0; i < models.length; ++i)
     {
         const modelName = models[i];
-
         try
         {
             await database[modelName].sync();
             models.splice(i, 1);
             i--;
+            console.log('success for ' + modelName);
         }
         catch (error)
         {
-
+            console.log('failed to initialize ' + modelName);
         }
     }
 
