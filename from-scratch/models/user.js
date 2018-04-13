@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const encryption = require('../utilities/encryption');
 
 module.exports = (sequelize, DataTypes) =>
 {
@@ -27,6 +28,12 @@ module.exports = (sequelize, DataTypes) =>
             required: true
         }
     });
+
+    User.prototype.authenticate = (password) =>
+    {
+        const inputPasswordHash = encryption.hashPassword(password, this.salt);
+        return inputPasswordHash === this.passwordHash;
+    };
 
     return User;
 };
