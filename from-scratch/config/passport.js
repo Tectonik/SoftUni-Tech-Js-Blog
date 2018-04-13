@@ -2,7 +2,7 @@ const passport = require('passport');
 const localPassport = require('passport-local');
 const User = require('../models').User;
 
-const authenticateUser = (username, password, done =>
+const authenticateUser = (username, password, done) =>
 {
     User
         .FindOne({ email: username })
@@ -20,7 +20,7 @@ const authenticateUser = (username, password, done =>
 
             return done(null, user);
         });
-});
+};
 
 module.exports = () =>
 {
