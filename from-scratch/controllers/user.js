@@ -2,6 +2,17 @@ const User = require('../models').User;
 const encryption = require('../utilities/encryption');
 
 module.exports = {
+    details: (request, response) =>
+    {
+        const id = request.params.id;
+        User
+            .findById(id)
+            .then(user =>
+            {
+                response.render('user/details', user.dataValues);
+            })
+    },
+
     loginGet: (request, response) =>
     {
         response.render('user/login');
